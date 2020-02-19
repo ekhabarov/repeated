@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package mypackage;
+
+option go_package = "pb";
+
+import "protoc-gen-struct-transformer/options/annotations.proto";
+import "protobuf/gogoproto/gogo.proto";
+
+option (transformer.go_repo_package) = "repeated";
+option (transformer.go_protobuf_package) = "pb";
+option (transformer.go_models_file_path) = "models.go";
+
+message Inner {
+  option (transformer.go_struct) = "Inner";
+
+  string text = 1;
+}
+
+message Outer {
+  option (transformer.go_struct) = "Outer";
+
+  int64 id = 1;
+  repeated Inner inners = 2 [ (gogoproto.nullable) = false ]; // works correctly with option = true
+}
